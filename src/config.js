@@ -13,3 +13,5 @@ export const TIPOS_PUBLICACION = [
 ]
 
 export const ESTADOS_PUBLICACION = ['borrador', 'publicada', 'vencida']
+
+//verificar si el entorno es de desarrollo o producción
