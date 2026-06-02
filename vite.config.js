@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://163.192.134.248',
+        target: 'https://avisosisc.duckdns.org',
         changeOrigin: true,
       },
     },

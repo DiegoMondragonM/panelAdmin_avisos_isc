@@ -1,7 +1,7 @@
 // En desarrollo usa el proxy de Vite (/api) para evitar errores de CORS en el navegador
 export const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  (import.meta.env.DEV ? '/api' : 'http://163.192.134.248/api')
+  (import.meta.env.DEV ? '/api' : 'https://avisosisc.duckdns.org/api')
 
 export const TIPOS_PUBLICACION = [
   'curso',
