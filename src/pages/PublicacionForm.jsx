@@ -12,6 +12,7 @@ import { labelTipo } from '../utils/labels'
 import { toDatetimeLocal, fromDatetimeLocal } from '../utils/dates'
 import PublicacionPreview from '../components/PublicacionPreview'
 import FlashMessage from '../components/FlashMessage'
+import DateTimeField from '../components/DateTimeField'
 
 const emptyForm = {
   titulo: '',
@@ -283,45 +284,39 @@ export default function PublicacionForm() {
 
           <section className="form-section">
             <h4>Fechas del evento</h4>
+            <p className="field-hint">Ambas fechas son opcionales. Deja vacío si el evento no tiene fecha definida.</p>
             <div className="form-row">
-              <label>
-                Inicio del evento
-                <input
-                  type="datetime-local"
-                  value={form.fecha_inicio}
-                  onChange={(e) => updateField('fecha_inicio', e.target.value)}
-                />
-              </label>
-              <label>
-                Fin del evento
-                <input
-                  type="datetime-local"
-                  value={form.fecha_fin}
-                  onChange={(e) => updateField('fecha_fin', e.target.value)}
-                />
-              </label>
+              <DateTimeField
+                label="Inicio del evento"
+                value={form.fecha_inicio}
+                onChange={(v) => updateField('fecha_inicio', v)}
+              />
+              <DateTimeField
+                label="Fin del evento"
+                value={form.fecha_fin}
+                onChange={(v) => updateField('fecha_fin', v)}
+                minDate={form.fecha_inicio ? new Date(form.fecha_inicio) : undefined}
+              />
             </div>
           </section>
 
           <section className="form-section">
-            <h4>Inscripciones (opcional)</h4>
+            <h4>Inscripciones <span className="section-optional">(opcional)</span></h4>
+            <p className="field-hint">Período en que los usuarios pueden inscribirse al evento.</p>
             <div className="form-row">
-              <label>
-                Apertura
-                <input
-                  type="datetime-local"
-                  value={form.fecha_inscripcion_inicio}
-                  onChange={(e) => updateField('fecha_inscripcion_inicio', e.target.value)}
-                />
-              </label>
-              <label>
-                Cierre
-                <input
-                  type="datetime-local"
-                  value={form.fecha_inscripcion_fin}
-                  onChange={(e) => updateField('fecha_inscripcion_fin', e.target.value)}
-                />
-              </label>
+              <DateTimeField
+                label="Apertura de inscripciones"
+                value={form.fecha_inscripcion_inicio}
+                onChange={(v) => updateField('fecha_inscripcion_inicio', v)}
+                maxDate={form.fecha_inicio ? new Date(form.fecha_inicio) : undefined}
+              />
+              <DateTimeField
+                label="Cierre de inscripciones"
+                value={form.fecha_inscripcion_fin}
+                onChange={(v) => updateField('fecha_inscripcion_fin', v)}
+                minDate={form.fecha_inscripcion_inicio ? new Date(form.fecha_inscripcion_inicio) : undefined}
+                maxDate={form.fecha_inicio ? new Date(form.fecha_inicio) : undefined}
+              />
             </div>
           </section>
 

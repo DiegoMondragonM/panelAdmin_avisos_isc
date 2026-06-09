@@ -11,6 +11,7 @@ import { labelTipo, labelEstado, labelFuente } from '../utils/labels'
 import { formatDate, isPorVencer } from '../utils/dates'
 import FlashMessage from '../components/FlashMessage'
 import PublicacionDetalleModal from '../components/PublicacionDetalleModal'
+import ConfirmModal, { ACTION_CONFIRM } from '../components/ConfirmModal'
 
 const TABS = [
   { key: '', label: 'Todas', fuente: '' },
@@ -21,11 +22,7 @@ const TABS = [
 
 const LIST_LIMIT = 50
 
-const ACTION_LABELS = {
-  publicar: '¿Publicar esta publicación? Aparecerá en el feed y se enviará notificación push.',
-  vencer: '¿Marcar como vencida? Dejará de mostrarse en el feed público.',
-  eliminar: '¿Eliminar esta publicación? Esta acción no se puede deshacer.',
-}
+const EMPTY_CONFIRM = { open: false, action: null, id: null, titulo: '' }
 
 export default function Publicaciones() {
   const location = useLocation()
@@ -42,6 +39,7 @@ export default function Publicaciones() {
   const [detalleId, setDetalleId] = useState(null)
   const [actionMsg, setActionMsg] = useState('')
   const [counts, setCounts] = useState({ borrador: 0, publicada: 0, vencida: 0 })
+  const [confirmState, setConfirmState] = useState(EMPTY_CONFIRM)
 
   useEffect(() => {
     const { message, estado } = location.state || {}
@@ -137,11 +135,14 @@ export default function Publicaciones() {
     return text
   }
 
-  async function handleAction(id, action) {
-    const msg = ACTION_LABELS[action]
-    if (!confirm(msg)) return
-    setActionLoading(id)
+  function handleAction(id, action, titulo = '') {
     setActionMsg('')
+    setConfirmState({ open: true, action, id, titulo })
+  }
+
+  async function executeConfirmedAction() {
+    const { action, id } = confirmState
+    setActionLoading(id)
     try {
       if (action === 'publicar') {
         await publicarPublicacion(id)
@@ -153,10 +154,12 @@ export default function Publicaciones() {
         await deletePublicacion(id)
         setFlash('Publicación eliminada.')
       }
+      setConfirmState(EMPTY_CONFIRM)
       setDetalleId(null)
       setRefreshKey((k) => k + 1)
     } catch (err) {
       setActionMsg(err.message)
+      setConfirmState(EMPTY_CONFIRM)
     } finally {
       setActionLoading(null)
     }
@@ -322,7 +325,7 @@ export default function Publicaciones() {
                             type="button"
                             className="btn btn-sm btn-success"
                             disabled={actionLoading === pub.id}
-                            onClick={() => handleAction(pub.id, 'publicar')}
+                            onClick={() => handleAction(pub.id, 'publicar', pub.titulo)}
                           >
                             Publicar
                           </button>
@@ -332,7 +335,7 @@ export default function Publicaciones() {
                             type="button"
                             className="btn btn-sm btn-warning"
                             disabled={actionLoading === pub.id}
-                            onClick={() => handleAction(pub.id, 'vencer')}
+                            onClick={() => handleAction(pub.id, 'vencer', pub.titulo)}
                           >
                             Vencer
                           </button>
@@ -342,7 +345,7 @@ export default function Publicaciones() {
                             type="button"
                             className="btn btn-sm btn-danger"
                             disabled={actionLoading === pub.id}
-                            onClick={() => handleAction(pub.id, 'eliminar')}
+                            onClick={() => handleAction(pub.id, 'eliminar', pub.titulo)}
                           >
                             Eliminar
                           </button>
@@ -382,8 +385,27 @@ export default function Publicaciones() {
       <PublicacionDetalleModal
         pubId={detalleId}
         onClose={() => setDetalleId(null)}
-        onAction={(id, action) => handleAction(id, action)}
+        onAction={(id, action, titulo) => handleAction(id, action, titulo)}
       />
+
+      {confirmState.open && (() => {
+        const cfg = ACTION_CONFIRM[confirmState.action]
+        if (!cfg) return null
+        return (
+          <ConfirmModal
+            isOpen
+            title={cfg.title}
+            message={cfg.getMessage(confirmState.titulo)}
+            detail={cfg.getDetail()}
+            confirmLabel={cfg.confirmLabel}
+            variant={cfg.variant}
+            icon={cfg.icon}
+            loading={actionLoading === confirmState.id}
+            onConfirm={executeConfirmedAction}
+            onClose={() => setConfirmState(EMPTY_CONFIRM)}
+          />
+        )
+      })()}
     </>
   )
 }

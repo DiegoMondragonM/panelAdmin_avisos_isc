@@ -1,0 +1,339 @@
+/* ── Trigger button ─────────────────────────────────────────── */
+
+.dtp-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.dtp-label {
+  font-size: 14px;
+  color: #9e9ea4;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dtp-required {
+  color: #ef5350;
+}
+
+/* react-datepicker wraps customInput — make it full width */
+.dtp-wrapper .react-datepicker-wrapper,
+.dtp-wrapper .react-datepicker__input-container {
+  width: 100%;
+}
+
+.dtp-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 14px;
+  background: #1d2634;
+  border: 1px solid #3d4f6f;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  text-align: left;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  color: inherit;
+}
+
+.dtp-trigger:hover {
+  border-color: #5c7cfa;
+  background: #202f42;
+}
+
+.dtp-trigger:focus,
+.dtp-trigger:focus-visible {
+  outline: none;
+  border-color: #2962ff;
+  box-shadow: 0 0 0 3px rgba(41, 98, 255, 0.25);
+}
+
+.dtp-icon-left {
+  color: #5c7cfa;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.dtp-icon-right {
+  color: #6b7a99;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.dtp-value {
+  color: #e8edf8;
+  font-weight: 500;
+}
+
+.dtp-placeholder {
+  color: #4d5d7a;
+}
+
+/* Clear button injected by react-datepicker */
+.dtp-wrapper .react-datepicker__close-icon {
+  right: 4px;
+  padding: 0;
+}
+
+.dtp-wrapper .react-datepicker__close-icon::after {
+  background: #3d4f6f;
+  color: #9e9ea4;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+.dtp-wrapper .react-datepicker__close-icon:hover::after {
+  background: #d50000;
+  color: #fff;
+}
+
+/* ── Popper z-index ─────────────────────────────────────────── */
+.dtp-popper {
+  z-index: 200 !important;
+}
+
+/* ── Calendar container ─────────────────────────────────────── */
+.dtp-calendar.react-datepicker {
+  background: #1e2b3c;
+  border: 1px solid #3d4f6f;
+  border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55), 0 4px 16px rgba(0, 0, 0, 0.3);
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+}
+
+/* ── Header (month + nav) ───────────────────────────────────── */
+.dtp-calendar .react-datepicker__header {
+  background: #16202e;
+  border-bottom: 1px solid #3d4f6f;
+  padding: 14px 8px 8px;
+  border-radius: 0;
+}
+
+.dtp-calendar .react-datepicker__current-month {
+  color: #e8edf8;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+}
+
+/* Navigation arrows */
+.dtp-calendar .react-datepicker__navigation {
+  top: 14px;
+}
+
+.dtp-calendar .react-datepicker__navigation-icon::before {
+  border-color: #6b7a99;
+  border-width: 2px 2px 0 0;
+  width: 8px;
+  height: 8px;
+}
+
+.dtp-calendar .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+  border-color: #ffffff;
+}
+
+/* ── Day names row ──────────────────────────────────────────── */
+.dtp-calendar .react-datepicker__day-names {
+  margin: 0;
+  padding: 0 4px;
+}
+
+.dtp-calendar .react-datepicker__day-name {
+  color: #4d5d7a;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  width: 36px;
+  line-height: 28px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* ── Days grid ──────────────────────────────────────────────── */
+.dtp-calendar .react-datepicker__month {
+  margin: 6px 4px;
+}
+
+.dtp-calendar .react-datepicker__week {
+  display: flex;
+}
+
+.dtp-calendar .react-datepicker__day {
+  color: #c8d3e8;
+  width: 36px;
+  line-height: 36px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 1px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dtp-calendar .react-datepicker__day:hover:not(.react-datepicker__day--disabled) {
+  background: rgba(41, 98, 255, 0.28);
+  color: #ffffff;
+}
+
+.dtp-calendar .react-datepicker__day--selected {
+  background: #2962ff !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 8px;
+}
+
+.dtp-calendar .react-datepicker__day--selected:hover {
+  background: #3d74ff !important;
+}
+
+.dtp-calendar .react-datepicker__day--keyboard-selected {
+  background: rgba(41, 98, 255, 0.35);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.dtp-calendar .react-datepicker__day--today {
+  position: relative;
+  font-weight: 700;
+  color: #90caf9;
+}
+
+.dtp-calendar .react-datepicker__day--today::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #90caf9;
+}
+
+.dtp-calendar .react-datepicker__day--today.react-datepicker__day--selected::after {
+  background: #fff;
+}
+
+.dtp-calendar .react-datepicker__day--outside-month {
+  color: #2d3a50;
+}
+
+.dtp-calendar .react-datepicker__day--disabled,
+.dtp-calendar .react-datepicker__day--disabled:hover {
+  color: #2a3648;
+  background: transparent;
+  cursor: not-allowed;
+}
+
+/* ── Time input container (react-datepicker's showTimeInput wrapper) */
+.dtp-calendar .react-datepicker__input-time-container {
+  clear: both;
+  width: 100%;
+  float: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Hide the default "Time:" caption — our combobox has its own label */
+.dtp-calendar .react-datepicker-time__caption {
+  display: none;
+}
+
+.dtp-calendar .react-datepicker-time__input-container {
+  display: block;
+  width: 100%;
+}
+
+.dtp-calendar .react-datepicker-time__input {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+/* ── Time combobox ──────────────────────────────────────────── */
+.time-combobox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 14px;
+  background: #16202e;
+  border-top: 1px solid #3d4f6f;
+}
+
+.time-combobox-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #4d5d7a;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  flex-shrink: 0;
+  min-width: 52px;
+}
+
+.time-combobox-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.time-select {
+  background: #1e2b3c;
+  border: 1px solid #3d4f6f;
+  border-radius: 6px;
+  color: #e8edf8;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 4px 5px 8px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  text-align: center;
+  min-width: 50px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.time-select:hover {
+  border-color: #5c7cfa;
+  background: #263347;
+}
+
+.time-select:focus {
+  outline: none;
+  border-color: #2962ff;
+  box-shadow: 0 0 0 2px rgba(41, 98, 255, 0.25);
+}
+
+.time-select-ampm {
+  min-width: 58px;
+  color: #90caf9;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.time-colon {
+  color: #4d5d7a;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 0 1px;
+  user-select: none;
+}
+
+/* ── Hide the popper triangle (cleaner look) ────────────────── */
+.dtp-popper .react-datepicker__triangle {
+  display: none;
+}

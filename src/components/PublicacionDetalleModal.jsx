@@ -123,7 +123,7 @@ export default function PublicacionDetalleModal({ pubId, onClose, onAction }) {
               <button
                 type="button"
                 className="btn btn-success-solid"
-                onClick={() => onAction(pub.id, 'publicar')}
+                onClick={() => onAction(pub.id, 'publicar', pub.titulo)}
               >
                 Publicar
               </button>
@@ -132,7 +132,7 @@ export default function PublicacionDetalleModal({ pubId, onClose, onAction }) {
               <button
                 type="button"
                 className="btn btn-warning"
-                onClick={() => onAction(pub.id, 'vencer')}
+                onClick={() => onAction(pub.id, 'vencer', pub.titulo)}
               >
                 Marcar vencida
               </button>
