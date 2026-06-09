@@ -58,7 +58,7 @@ export default function Dashboard() {
     return (
       <div className="page-loading">
         <div className="spinner" />
-        <p>Cargando métricas...</p>
+        <p>Cargando información del panel...</p>
       </div>
     )
   }
@@ -86,7 +86,7 @@ export default function Dashboard() {
       icon: <BsBellFill className="card_icon" />,
     },
     {
-      title: 'Interacciones (periodo)',
+      title: 'Interacciones del período',
       value: num(resumen.interacciones_periodo),
       icon: <BsFillGrid1X2Fill className="card_icon" />,
     },
@@ -105,7 +105,7 @@ export default function Dashboard() {
   return (
     <>
       <div className="main-title">
-        <h3>Dashboard</h3>
+        <h3>Inicio</h3>
         <div className="quick-actions">
           <Link to="/publicaciones/nueva" className="btn btn-primary">
             <BsPencilSquare className="icon" /> Nueva publicación
@@ -118,9 +118,9 @@ export default function Dashboard() {
 
       {borradores > 0 && (
         <div className="alert alert-info">
-          Tienes <strong>{borradores}</strong> borrador(es) pendientes de publicar.{' '}
+          Hay <strong>{borradores}</strong> aviso(s) en borrador pendiente(s) de revisión y publicación.{' '}
           <Link to="/publicaciones" state={{ estado: 'borrador' }}>
-            Revisar borradores →
+            Ver borradores
           </Link>
         </div>
       )}
@@ -140,23 +140,26 @@ export default function Dashboard() {
       </div>
 
       <div className="stats-row">
-        <span>Borradores: {borradores}</span>
-        <span>Manuales: {num(resumen.total_manuales)}</span>
-        <span>MOOC: {num(resumen.total_mooc)}</span>
+        <span>En borrador: {borradores}</span>
+        <span>Avisos propios: {num(resumen.total_manuales)}</span>
+        <span>Cursos en línea: {num(resumen.total_mooc)}</span>
       </div>
 
       <div className="charts">
         <div className="chart-box">
           <h4>Interacciones por día</h4>
           {chartPorDia.length === 0 ? (
-            <p className="chart-empty">Sin datos en este periodo</p>
+            <p className="chart-empty">Sin actividad registrada en el período</p>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartPorDia}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#444" />
                 <XAxis dataKey="dia" stroke="#9e9ea4" fontSize={12} />
                 <YAxis stroke="#9e9ea4" fontSize={12} />
-                <Tooltip contentStyle={{ background: '#263043', border: 'none' }} />
+                <Tooltip
+                  contentStyle={{ background: '#263043', border: 'none' }}
+                  formatter={(value) => [value, 'Interacciones']}
+                />
                 <Line type="monotone" dataKey="total" stroke="#2962ff" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
@@ -164,16 +167,19 @@ export default function Dashboard() {
         </div>
 
         <div className="chart-box">
-          <h4>Por tipo de evento</h4>
+          <h4>Interacciones por tipo de aviso</h4>
           {chartEventos.length === 0 ? (
-            <p className="chart-empty">Sin datos en este periodo</p>
+            <p className="chart-empty">Sin actividad registrada en el período</p>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartEventos}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#444" />
                 <XAxis dataKey="tipo" stroke="#9e9ea4" fontSize={11} />
                 <YAxis stroke="#9e9ea4" fontSize={12} />
-                <Tooltip contentStyle={{ background: '#263043', border: 'none' }} />
+                <Tooltip
+                  contentStyle={{ background: '#263043', border: 'none' }}
+                  formatter={(value) => [value, 'Interacciones']}
+                />
                 <Bar dataKey="total" fill="#ff6d00" />
               </BarChart>
             </ResponsiveContainer>
@@ -184,17 +190,17 @@ export default function Dashboard() {
       <section className="top-section">
         <div className="top-section-header">
           <div>
-            <h4>Top publicaciones ISC</h4>
+            <h4>Avisos más consultados — Área ISC</h4>
             <p className="section-subtitle">
-              Publicaciones manuales y cursos MOOC relacionados con el plan de estudios
-              (programación, web, bases de datos, DevOps, seguridad, IA, redes, gestión).
+              Avisos propios y cursos en línea vinculados al plan de estudios de Ingeniería en Sistemas Computacionales
+              (programación, desarrollo web, bases de datos, seguridad, redes, gestión de proyectos).
             </p>
           </div>
         </div>
 
         {topISC.length === 0 ? (
           <p className="chart-empty">
-            Aún no hay publicaciones publicadas del área ISC o manuales.
+            No hay avisos activos registrados para el área de ISC.
           </p>
         ) : (
           <div className="table-wrap">
@@ -207,7 +213,7 @@ export default function Dashboard() {
                   <th>Vistas</th>
                   <th>Clics</th>
                   <th>Favoritos</th>
-                  <th>Total</th>
+                  <th>Interacciones</th>
                 </tr>
               </thead>
               <tbody>

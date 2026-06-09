@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getPublicacion } from '../api/publicaciones'
-import { labelTipo, labelEstado } from '../utils/labels'
+import { labelTipo, labelEstado, labelFuente } from '../utils/labels'
 import { formatDateTime, isPorVencer } from '../utils/dates'
 
 export default function PublicacionDetalleModal({ pubId, onClose, onAction }) {
@@ -42,7 +42,7 @@ export default function PublicacionDetalleModal({ pubId, onClose, onAction }) {
         aria-labelledby="modal-title"
       >
         <div className="modal-header">
-          <h4 id="modal-title">Detalle de publicación</h4>
+          <h4 id="modal-title">Información del aviso</h4>
           <button type="button" className="modal-close" onClick={onClose}>
             ×
           </button>
@@ -59,17 +59,19 @@ export default function PublicacionDetalleModal({ pubId, onClose, onAction }) {
             <div className="modal-badges">
               <span className={`badge badge-${pub.estado}`}>{labelEstado(pub.estado)}</span>
               <span className="badge badge-tipo">{labelTipo(pub.tipo)}</span>
-              <span className="badge badge-fuente">{pub.fuente}</span>
+              <span className={`badge badge-fuente-${pub.fuente === 'mooc' ? 'mooc' : 'manual'}`}>
+                {labelFuente(pub.fuente)}
+              </span>
               {isPorVencer(pub) && (
-                <span className="badge badge-warning">Por vencer</span>
+                <span className="badge badge-warning">Próximo a vencer</span>
               )}
             </div>
             <h3>{pub.titulo}</h3>
             {pub.descripcion && <p className="modal-desc">{pub.descripcion}</p>}
             {pub.link && (
               <p>
-                <a href={pub.link} target="_blank" rel="noreferrer">
-                  {pub.link}
+                <a href={pub.link} target="_blank" rel="noreferrer" className="modal-link">
+                  Abrir enlace de referencia ↗
                 </a>
               </p>
             )}
@@ -79,20 +81,20 @@ export default function PublicacionDetalleModal({ pubId, onClose, onAction }) {
                 <dd>{pub.autor || '—'}</dd>
               </div>
               <div>
-                <dt>Evento</dt>
+                <dt>Fechas del evento</dt>
                 <dd>
                   {formatDateTime(pub.fecha_inicio)} — {formatDateTime(pub.fecha_fin)}
                 </dd>
               </div>
               <div>
-                <dt>Inscripción</dt>
+                <dt>Período de inscripción</dt>
                 <dd>
                   {formatDateTime(pub.fecha_inscripcion_inicio)} —{' '}
                   {formatDateTime(pub.fecha_inscripcion_fin)}
                 </dd>
               </div>
               <div>
-                <dt>Actualizado</dt>
+                <dt>Última modificación</dt>
                 <dd>{formatDateTime(pub.updated_at)}</dd>
               </div>
             </dl>

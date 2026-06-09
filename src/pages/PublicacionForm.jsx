@@ -8,7 +8,7 @@ import {
   publicarPublicacion,
 } from '../api/publicaciones'
 import { TIPOS_PUBLICACION } from '../config'
-import { labelTipo } from '../utils/labels'
+import { labelTipo, labelEstado } from '../utils/labels'
 import { toDatetimeLocal, fromDatetimeLocal } from '../utils/dates'
 import PublicacionPreview from '../components/PublicacionPreview'
 import FlashMessage from '../components/FlashMessage'
@@ -83,9 +83,9 @@ export default function PublicacionForm() {
     getPublicacion(id)
       .then((res) => {
         const pub = res.publicacion
-        if (!pub) throw new Error('Publicación no encontrada')
+        if (!pub) throw new Error('El aviso solicitado no fue encontrado.')
         if (pub.fuente !== 'manual') {
-          throw new Error('Solo se pueden editar publicaciones manuales')
+          throw new Error('Solo es posible editar avisos registrados manualmente.')
         }
         setPubEstado(pub.estado)
         setForm({
@@ -143,11 +143,11 @@ export default function PublicacionForm() {
         if (andPublish && pubEstado === 'borrador') {
           await publicarPublicacion(id)
           navigate('/publicaciones', {
-            state: { message: `Publicación actualizada y publicada: ${form.titulo}` },
+            state: { message: `El aviso fue actualizado y publicado exitosamente.` },
           })
         } else {
           navigate('/publicaciones', {
-            state: { message: `Cambios guardados: ${form.titulo}` },
+            state: { message: `Los cambios se guardaron correctamente.` },
           })
         }
       } else {
@@ -156,11 +156,11 @@ export default function PublicacionForm() {
         if (andPublish) {
           await publicarPublicacion(newId)
           navigate('/publicaciones', {
-            state: { message: `Publicación creada y publicada: ${form.titulo}` },
+            state: { message: `El aviso fue creado y publicado exitosamente.` },
           })
         } else {
           navigate('/publicaciones', {
-            state: { message: `Borrador guardado: ${form.titulo}` },
+            state: { message: `El borrador se guardó correctamente. Puedes publicarlo cuando esté listo.` },
           })
         }
       }
@@ -180,7 +180,7 @@ export default function PublicacionForm() {
     return (
       <div className="page-loading">
         <div className="spinner" />
-        <p>Cargando publicación...</p>
+        <p>Cargando información del aviso...</p>
       </div>
     )
   }
@@ -193,18 +193,19 @@ export default function PublicacionForm() {
         <div>
           <h3>{isEdit ? 'Editar publicación' : 'Nueva publicación'}</h3>
           {isEdit && pubEstado && (
-            <span className={`badge badge-${pubEstado}`}>{pubEstado}</span>
+            <span className={`badge badge-${pubEstado}`}>{labelEstado(pubEstado)}</span>
           )}
         </div>
         <Link to="/publicaciones" className="btn">
-          ← Volver a la lista
+          ← Volver al listado
         </Link>
       </div>
 
       {!isEdit && (
         <p className="form-hint">
-          Puedes guardar como <strong>borrador</strong> o <strong>crear y publicar</strong> de
-          inmediato. Al publicar se envía notificación push a usuarios con intereses coincidentes.
+          Puedes guardar el aviso como <strong>borrador</strong> para revisarlo más tarde, o
+          seleccionar <strong>Crear y publicar</strong> para que sea visible de inmediato.
+          Al publicar, se envía una notificación automática a los usuarios con intereses relacionados.
         </p>
       )}
 
@@ -227,7 +228,7 @@ export default function PublicacionForm() {
                 required
                 minLength={3}
                 maxLength={200}
-                placeholder="Ej. Hackathon ISC 2026"
+                placeholder="Ej. Olimpiada de Programación ISC 2026"
               />
               <span className="field-hint">{form.titulo.length}/200</span>
             </label>
@@ -253,7 +254,7 @@ export default function PublicacionForm() {
                 value={form.descripcion}
                 onChange={(e) => updateField('descripcion', e.target.value)}
                 rows={5}
-                placeholder="Describe el evento, requisitos, premios..."
+                placeholder="Describe brevemente el aviso: objetivo, requisitos de participación y detalles relevantes."
               />
             </label>
           </section>
@@ -262,7 +263,7 @@ export default function PublicacionForm() {
             <h4>Enlaces e imagen</h4>
 
             <label>
-              Enlace (inscripción o más info)
+              Enlace de referencia
               <input
                 type="url"
                 value={form.link}
@@ -284,7 +285,7 @@ export default function PublicacionForm() {
 
           <section className="form-section">
             <h4>Fechas del evento</h4>
-            <p className="field-hint">Ambas fechas son opcionales. Deja vacío si el evento no tiene fecha definida.</p>
+            <p className="field-hint">Las fechas son opcionales. Déjalas vacías si el aviso no tiene una fecha de realización definida.</p>
             <div className="form-row">
               <DateTimeField
                 label="Inicio del evento"
@@ -302,7 +303,7 @@ export default function PublicacionForm() {
 
           <section className="form-section">
             <h4>Inscripciones <span className="section-optional">(opcional)</span></h4>
-            <p className="field-hint">Período en que los usuarios pueden inscribirse al evento.</p>
+            <p className="field-hint">Define el período durante el cual los estudiantes podrán registrar su participación.</p>
             <div className="form-row">
               <DateTimeField
                 label="Apertura de inscripciones"
@@ -321,11 +322,11 @@ export default function PublicacionForm() {
           </section>
 
           <section className="form-section">
-            <h4>Tags / intereses</h4>
+            <h4>Etiquetas e intereses</h4>
             <input
               type="search"
               className="tag-search"
-              placeholder="Buscar tag..."
+              placeholder="Buscar etiqueta..."
               value={tagSearch}
               onChange={(e) => setTagSearch(e.target.value)}
             />
@@ -342,7 +343,7 @@ export default function PublicacionForm() {
               ))}
             </div>
             {form.tag_ids.length > 0 && (
-              <p className="field-hint">{form.tag_ids.length} tag(s) seleccionados</p>
+              <p className="field-hint">{form.tag_ids.length} etiqueta(s) seleccionada(s)</p>
             )}
           </section>
 

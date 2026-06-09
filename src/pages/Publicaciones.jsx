@@ -124,14 +124,14 @@ export default function Publicaciones() {
   function tableMetaText() {
     if (!data) return ''
     if (filtros.estado === 'publicada' && filtros.fuente === 'manual') {
-      return `${data.total} publicación(es) manual(es) publicada(s) por el admin`
+      return `${data.total} aviso(s) publicado(s) directamente por el administrador`
     }
     if (filtros.estado === 'borrador' && filtros.fuente === 'manual') {
-      return `${data.total} borrador(es) del admin`
+      return `${data.total} borrador(es) registrado(s) por el administrador`
     }
-    let text = `${data.total} en total · mostrando ${publicaciones.length}`
+    let text = `Total: ${data.total} registro(s) · mostrando ${publicaciones.length}`
     if (data.paginas > 1) text += ` · página ${data.page} de ${data.paginas}`
-    if (busqueda) text += ` (filtrado por "${busqueda}")`
+    if (busqueda) text += ` · búsqueda: "${busqueda}"`
     return text
   }
 
@@ -146,13 +146,13 @@ export default function Publicaciones() {
     try {
       if (action === 'publicar') {
         await publicarPublicacion(id)
-        setFlash('Publicación publicada correctamente.')
+        setFlash('El aviso fue publicado exitosamente.')
       } else if (action === 'vencer') {
         await vencerPublicacion(id)
-        setFlash('Publicación marcada como vencida.')
+        setFlash('El aviso fue marcado como vencido correctamente.')
       } else if (action === 'eliminar') {
         await deletePublicacion(id)
-        setFlash('Publicación eliminada.')
+        setFlash('El aviso fue eliminado del sistema.')
       }
       setConfirmState(EMPTY_CONFIRM)
       setDetalleId(null)
@@ -197,7 +197,7 @@ export default function Publicaciones() {
             onClick={() => setTab(tab)}
             title={
               tab.key === 'publicada'
-                ? 'Solo publicaciones manuales publicadas por el admin'
+                ? 'Solo publicaciones manuales publicadas por el administrador'
                 : undefined
             }
           >
@@ -216,7 +216,7 @@ export default function Publicaciones() {
         <input
           type="search"
           className="search-input"
-          placeholder="Buscar por título o tag..."
+          placeholder="Buscar por título o etiqueta..."
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
         />
@@ -235,8 +235,8 @@ export default function Publicaciones() {
 
       {filtros.estado === 'publicada' && (
         <p className="form-hint tab-hint">
-          Mostrando solo publicaciones <strong>manuales</strong> publicadas por el administrador
-          (no incluye cursos MOOC).
+          Se muestran únicamente los avisos publicados directamente por el administrador.
+          Los cursos en línea externos no se incluyen en esta vista.
         </p>
       )}
 
@@ -253,9 +253,9 @@ export default function Publicaciones() {
 
           {publicaciones.length === 0 ? (
             <div className="empty-state">
-              <p>No hay publicaciones con estos filtros.</p>
+              <p>No se encontraron registros con los criterios seleccionados.</p>
               <Link to="/publicaciones/nueva" className="btn btn-primary">
-                Crear la primera publicación
+                Registrar nuevo aviso
               </Link>
             </div>
           ) : (
@@ -283,7 +283,7 @@ export default function Publicaciones() {
                           {pub.titulo}
                         </button>
                         {isPorVencer(pub) && (
-                          <span className="badge badge-warning">Por vencer</span>
+                          <span className="badge badge-warning">Próximo a vencer</span>
                         )}
                       </td>
                       <td>{labelTipo(pub.tipo)}</td>
@@ -310,7 +310,7 @@ export default function Publicaciones() {
                           className="btn btn-sm"
                           onClick={() => setDetalleId(pub.id)}
                         >
-                          Ver
+                          Ver detalle
                         </button>
                         {pub.fuente === 'manual' && pub.estado !== 'vencida' && (
                           <Link
@@ -337,7 +337,7 @@ export default function Publicaciones() {
                             disabled={actionLoading === pub.id}
                             onClick={() => handleAction(pub.id, 'vencer', pub.titulo)}
                           >
-                            Vencer
+                            Marcar vencida
                           </button>
                         )}
                         {pub.fuente === 'manual' && (
@@ -368,7 +368,7 @@ export default function Publicaciones() {
                 Anterior
               </button>
               <span>
-                Página {data.page} / {data.paginas}
+                Página {data.page} de {data.paginas}
               </span>
               <button
                 type="button"

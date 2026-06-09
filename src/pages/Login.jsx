@@ -33,7 +33,7 @@ export default function Login() {
   return (
     <div className="login-page">
       <form className="login-card" onSubmit={handleSubmit}>
-        <h1>Panel Admin</h1>
+        <h1>Panel de administración</h1>
         <p className="login-subtitle">Avisos ISC — Administración</p>
 
         {error && <div className="alert alert-error">{error}</div>}

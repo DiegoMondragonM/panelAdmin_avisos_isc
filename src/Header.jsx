@@ -8,7 +8,7 @@ function Header() {
     <header className="header">
       <div className="header-left">
         <p>
-          Bienvenido, <strong>{usuario?.nombre || 'Admin'}</strong>
+          Bienvenido, <strong>{usuario?.nombre || 'Administrador'}</strong>
         </p>
       </div>
       <div className="header-right">

@@ -17,7 +17,7 @@ function Sidebar() {
       <ul className="sidebar-list">
         <li className="sidebar-list-item">
           <NavLink to="/" end className={({ isActive }) => (isActive ? 'active' : '')}>
-            <BsFillGrid1X2Fill className="icon" /> Dashboard
+            <BsFillGrid1X2Fill className="icon" /> Inicio
           </NavLink>
         </li>
         <li className="sidebar-list-item">

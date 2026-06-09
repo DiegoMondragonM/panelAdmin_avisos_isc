@@ -53,7 +53,7 @@ export async function apiFetch(path, options = {}) {
   }
 
   if (!response.ok) {
-    const message = data?.error || `Error ${response.status}`
+    const message = data?.error || `Error del servidor: ${response.status}`
     const err = new Error(message)
     err.status = response.status
     throw err

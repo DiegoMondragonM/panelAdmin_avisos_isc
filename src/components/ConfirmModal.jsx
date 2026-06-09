@@ -124,7 +124,7 @@ export const ACTION_CONFIRM = {
     variant: 'primary',
     icon: BsSendFill,
     getMessage: (titulo) =>
-      `"${titulo}" aparecerá en el feed público y se enviará notificación push a los usuarios con intereses coincidentes.`,
+      `"${titulo}" aparecerá en el catálogo de avisos y se enviará notificación automática a los usuarios con intereses coincidentes.`,
     getDetail: () => '¿Deseas continuar?',
   },
   vencer: {
@@ -133,11 +133,11 @@ export const ACTION_CONFIRM = {
     variant: 'warning',
     icon: BsClockHistory,
     getMessage: (titulo) =>
-      `"${titulo}" dejará de mostrarse en el feed público.`,
-    getDetail: () => 'Podrás eliminarlo después si ya no es necesario.',
+      `"${titulo}" dejará de mostrarse en el catálogo de avisos.`,
+    getDetail: () => 'El aviso dejará de ser visible en la plataforma. Podrás eliminarlo si ya no es necesario.',
   },
   eliminar: {
-    title: 'Eliminar publicación',
+    title: 'Eliminar aviso',
     confirmLabel: 'Sí, eliminar',
     variant: 'danger',
     icon: BsTrash3Fill,

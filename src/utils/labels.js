@@ -22,7 +22,7 @@ export function labelEstado(estado) {
 }
 
 export function labelFuente(fuente) {
-  if (fuente === 'mooc') return 'MOOC'
+  if (fuente === 'mooc') return 'Curso en línea'
   if (fuente === 'manual') return 'Manual'
-  return fuente
+  return fuente || '—'
 }
