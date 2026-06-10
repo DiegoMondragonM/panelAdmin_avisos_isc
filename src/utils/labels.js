@@ -26,3 +26,20 @@ export function labelFuente(fuente) {
   if (fuente === 'manual') return 'Manual'
   return fuente || '—'
 }
+
+// Tipos de evento de interacción que reporta el backend (solo visualización)
+export const EVENTO_LABELS = {
+  view_detail: 'Ver detalle',
+  open_link: 'Abrir enlace',
+  tap_notification: 'Abrir notificación',
+  favorite: 'Favorito',
+  unfavorite: 'Quitar favorito',
+  view: 'Vista',
+  click: 'Clic',
+}
+
+export function labelEvento(tipoEvento) {
+  if (!tipoEvento) return '—'
+  const key = String(tipoEvento).trim().toLowerCase().replace(/\s+/g, '_')
+  return EVENTO_LABELS[key] || tipoEvento.replace(/_/g, ' ')
+}

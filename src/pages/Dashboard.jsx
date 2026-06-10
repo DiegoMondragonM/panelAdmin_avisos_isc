@@ -21,7 +21,8 @@ import {
 import { getMetricas } from '../api/metricas'
 import { listPublicaciones } from '../api/publicaciones'
 import { buildTopPublicacionesISC } from '../utils/iscTopics'
-import { labelTipo, labelFuente } from '../utils/labels'
+import { labelTipo, labelFuente, labelEvento } from '../utils/labels'
+import { formatDiaCorto } from '../utils/dates'
 
 function num(value) {
   return parseInt(value, 10) || 0
@@ -93,12 +94,12 @@ export default function Dashboard() {
   ]
 
   const chartPorDia = (por_dia || []).map((d) => ({
-    dia: d.dia?.slice(5) || d.dia,
+    dia: formatDiaCorto(d.dia),
     total: num(d.total),
   }))
 
   const chartEventos = (por_tipo_evento || []).map((e) => ({
-    tipo: e.tipo_evento?.replace(/_/g, ' ') || e.tipo_evento,
+    tipo: labelEvento(e.tipo_evento),
     total: num(e.total),
   }))
 
